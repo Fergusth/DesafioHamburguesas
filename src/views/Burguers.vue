@@ -49,14 +49,15 @@
             <form>
               <span v-if="formActualizar && idActualizar == hamburguesa._id">
                 <button class="btn btn-success"
-                type="submit" @click="Editar(hamburguesa);">Guardar</button>
+                type="submit" @click="Editar(hamburguesa);">Guardar</button>                
+                <button class="btn btn-danger" type="submit" @click="cncelar();">Cancelar</button>
               </span>
               <span v-else-if="formEliminar && idActualizar == hamburguesa._id">
                 <label>¿Estas seguro?</label><br>
                 <div class="btn-group">
                 <button class="btn btn-danger"
                 type="submit" @click="Eliminar(hamburguesa);">Si</button>
-                <button class="btn btn-info" type="submit" @click="canEliminar();">No</button>
+                <button class="btn btn-info" type="submit" @click="cncelar();">No</button>
                 </div>
               </span>
               <span v-else>
@@ -98,6 +99,7 @@
       this.listar();
     },
     methods: {
+      //Función para editar hamburguesa
       Editar(hamburguesa) {
         return (
           axios
@@ -120,6 +122,7 @@
           this.relistar()
         );
       },
+      //Función para ver las opciones de editación
       verEditar(hamburguesa) {
         this.idActualizar = hamburguesa._id;
         this.nombreActualizar = hamburguesa.nombre;
@@ -127,14 +130,18 @@
         this.ingredientesActualizar = hamburguesa.ingredientes;
         this.formActualizar = true;
       },
+      //Función para ver las opciones cuando se va a eliminar un elemento
       verEliminar(hamburguesa){
         this.idActualizar = hamburguesa._id;
         this.formEliminar = true;
       },
-      canEliminar(){
+      //Función para cancelar editación o eliminación
+      cncelar(){
+        this.formActualizar = false;
         this.formEliminar = false;
         this.idActualizar = 'x';
       },
+      //Función para listar
       listar() {
         axios
           .get("https://prueba-hamburguesas.herokuapp.com/burguer")
@@ -145,10 +152,12 @@
             this.error.push(e);
           });
       },
+      //Función para volver a listar cuando suceda una acción
       relistar() {
         setInterval(this.listar, 1000);
         setTimeout(clearInterval, 2000);
       },
+      //Función para eliminar
       Eliminar(hamburguesa) {
         const url = `https://prueba-hamburguesas.herokuapp.com/burguer/${
           hamburguesa._id

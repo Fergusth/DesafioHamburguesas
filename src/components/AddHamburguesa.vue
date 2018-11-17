@@ -41,14 +41,14 @@
         listo: false,
         idActualizar: "x",
         nombreActualizar: "",
-        postNombre: ""
-      
+        postNombre: ""      
       }
     },
     created: function () {
       this.listar();
     },
     methods: {
+      //Función para agregar
       Agregar() {
         if(this.escrito){
           return (
@@ -72,6 +72,7 @@
         );
         }        
       },
+      //Función para verificar que haya escrito algo en los campos
       verificar() {
         if (this.postNombre.length >= 1 && this.postCalorias >= 1 && this.postIngredientes >= 1) {
           this.escrito = true;
@@ -79,11 +80,13 @@
           this.escrito = false;
         }
       },
+      //Función despues de que se agrega una hamburguesa
       Correcto: function () {
         this.listo = true;
         this.ListoMensaje = "¡Correcto!";
         this.ListoMensaje2 = "La hamburguesa ha sido agregada";
       },
+      //Función para relistar, llamano a la función ya creada en Burguer.vue
       EmRelistar: function () {
         this.$emit('list:change')
       }
