@@ -41,7 +41,7 @@
         listo: false,
         idActualizar: "x",
         nombreActualizar: "",
-        postNombre: "Holaaaa"
+        postNombre: ""
       
       }
     },

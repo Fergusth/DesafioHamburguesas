@@ -6,8 +6,6 @@
     <p>Y además hace una llamada a la api al crearse, que debería responderte con el
       saludo de bienvenida:</p>
     <p class="hi">{{ saludo }}</p>
-    
-      
   </div>
 </template>
 
@@ -18,22 +16,10 @@ export default {
   data() {
     return {
       hamburguesas: [],
-      saludo: '...Nada todavía',    
-
+      saludo: '...Nada todavía',
     };
   },
   methods: {
-    Ejecutar() {
-      this.$http.get('https://prueba-hamburguesas.herokuapp.com/burguer/')
-                .then(function (response) {
-                  this.hamburguesas = response.data.results.map(function (hamburguesa) {
-                    return {                      
-                      nombre: hamburguesa.nombre,
-                      calorias: hamburguesa.calorias,
-                    }
-                  })
-                }.bind(this))
-    },
     getWelcomeMessage() {
       // Acá tienes un ejemplo de llamada http a la api
       // puedes encontrar documentación para usar el cliente http de vue aquí:
@@ -41,7 +27,6 @@ export default {
       this.$http.get('https://prueba-hamburguesas.herokuapp.com/test')
         .then((response) => { this.saludo = response.body; }, err => console.log(err));
     },
-    
   },
   created() {
     console.log('componente welcome creado!, llamando a api');

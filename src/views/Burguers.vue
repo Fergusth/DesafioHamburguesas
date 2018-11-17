@@ -1,8 +1,7 @@
 <template>
   <div class="container">
-    <h2>Crud de hamburguesas</h2>    
-    <!-- Trigger the modal with a button -->
-    <br>
+    <h2>Crud de hamburguesas</h2>
+    <!-- Trigger the modal with a button --><br>
     <br>
     <add-hamburguesa @list:change="relistar"></add-hamburguesa>
     <br>
@@ -18,7 +17,8 @@
           <tr>
             <td>
               <span v-if="formActualizar && idActualizar == hamburguesa._id">
-                <input required class="form-control is-valid" v-model="nombreActualizar" @keyup.enter="Editar(hamburguesa)" type="text">
+                <input required class="form-control is-valid" v-model="nombreActualizar"
+                @keyup.enter="Editar(hamburguesa)" type="text">
               </span>
               <span v-else>
                 {{hamburguesa.nombre}}
@@ -26,7 +26,8 @@
             </td>
             <td>
               <span v-if="formActualizar && idActualizar == hamburguesa._id">
-                <input required class="form-control is-valid" v-model="ingredientesActualizar" @keyup.enter="Editar(hamburguesa)" type="text">
+                <input required class="form-control is-valid"
+                v-model="ingredientesActualizar" @keyup.enter="Editar(hamburguesa)" type="text">
               </span>
               <span v-else>
                 <template v-for="Ingrediente of hamburguesa.ingredientes">
@@ -36,7 +37,8 @@
             </td>
             <td>
               <span v-if="formActualizar && idActualizar == hamburguesa._id">
-                <input required class="form-control is-valid" v-model="caloriasActualizar" type="text" @keyup.enter="Editar(hamburguesa)">
+                <input required class="form-control is-valid"
+                v-model="caloriasActualizar" type="text" @keyup.enter="Editar(hamburguesa)">
               </span>
               <span v-else>
                 {{hamburguesa.calorias}}
@@ -46,19 +48,23 @@
             <td>
             <form>
               <span v-if="formActualizar && idActualizar == hamburguesa._id">
-                <button class="btn btn-success" type="submit" @click="Editar(hamburguesa);">Guardar</button>
-              </span>              
-              <span v-if="formEliminar && idActualizar == hamburguesa._id">
+                <button class="btn btn-success"
+                type="submit" @click="Editar(hamburguesa);">Guardar</button>
+              </span>
+              <span v-else-if="formEliminar && idActualizar == hamburguesa._id">
                 <label>¿Estas seguro?</label><br>
                 <div class="btn-group">
-                <button class="btn btn-danger" type="submit" @click="Eliminar(hamburguesa);">Si</button>
+                <button class="btn btn-danger"
+                type="submit" @click="Eliminar(hamburguesa);">Si</button>
                 <button class="btn btn-info" type="submit" @click="canEliminar();">No</button>
                 </div>
               </span>
               <span v-else>
                 <div class="btn-group">
-                <button class="btn btn-danger" type="submit" @click="verEliminar(hamburguesa);">Eliminar</button>
-                <button class="btn btn-info" type="submit" @click="verEditar(hamburguesa)">Editar</button>
+                <button class="btn btn-danger"
+                type="submit" @click="verEliminar(hamburguesa);">Eliminar</button>
+                <button class="btn btn-info"
+                type="submit" @click="verEditar(hamburguesa)">Editar</button>
                 </div>
               </span>
             </form>
@@ -82,16 +88,16 @@
     },
     data() {
       return {
-        hamburguesas: [],        
-        error: [],        
-        formActualizar: false,   
-        formEliminar: false     
+        hamburguesas: [],
+        error: [],
+        formActualizar: false,
+        formEliminar: false
       };
     },
     created: function () {
       this.listar();
     },
-    methods: {      
+    methods: {
       Editar(hamburguesa) {
         return (
           axios
