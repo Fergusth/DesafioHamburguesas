@@ -1,31 +1,10 @@
 <template>
   <div class="container">
-    <h2>Crud de hamburguesas</h2>
-
-    <div class="alert alert-success" v-if="listo">
-      <strong>{{ListoMensaje}}</strong>{{ListoMensaje2}}
-    </div>
+    <h2>Crud de hamburguesas</h2>    
     <!-- Trigger the modal with a button -->
-
     <br>
     <br>
-    <form>
-      <div class="form-row">
-        <div class="col-md-4 mb-3">
-          <label for="validationServer01">Nombre</label>
-          <input type="text" class="form-control is-valid" v-model="postNombre" placeholder="Nombre" required>
-        </div>
-        <div class="col-md-4 mb-3">
-          <label for="validationServer02">Calorías</label>
-          <input type="number" class="form-control is-valid" v-model="postCalorias" placeholder="Calorías" required>
-        </div>
-        <div class="col-md-4 mb-3">
-          <label for="validationServer02">Ingredientes</label>
-          <input type="text" class="form-control is-valid" v-model="postIngredientes" placeholder="Separados por coma ','" required>
-        </div>
-      </div>
-      <button class="btn btn-info btn-lg" type="submit" @click="Agregar(); Correcto();">Agregar</button>
-    </form>
+    <add-hamburguesa @list:change="relistar"></add-hamburguesa>
     <br>
     <table class="table">
       <thead>
@@ -68,10 +47,19 @@
             <form>
               <span v-if="formActualizar && idActualizar == hamburguesa._id">
                 <button class="btn btn-success" type="submit" @click="Editar(hamburguesa);">Guardar</button>
+              </span>              
+              <span v-if="formEliminar && idActualizar == hamburguesa._id">
+                <label>¿Estas seguro?</label><br>
+                <div class="btn-group">
+                <button class="btn btn-danger" type="submit" @click="Eliminar(hamburguesa);">Si</button>
+                <button class="btn btn-info" type="submit" @click="canEliminar();">No</button>
+                </div>
               </span>
               <span v-else>
-                <button class="btn btn-danger" type="submit" @click="Eliminar(hamburguesa);">Eliminar</button>
+                <div class="btn-group">
+                <button class="btn btn-danger" type="submit" @click="verEliminar(hamburguesa);">Eliminar</button>
                 <button class="btn btn-info" type="submit" @click="verEditar(hamburguesa)">Editar</button>
+                </div>
               </span>
             </form>
             </td>
@@ -86,29 +74,24 @@
 <script src="https://unpkg.com/axios@0.18.0/dist/axios.min.js"></script>
 <script type="text/javascript">
   import axios from "axios";
+  import AddHamburguesa from '../components/AddHamburguesa.vue';
   export default {
     name: "Burguers",
+    components:{
+      AddHamburguesa,
+    },
     data() {
       return {
-        hamburguesas: [],
-        ListoMensaje: "",
-        ListoMensaje2: "",
-        error: [],
-        listo: false,
-        formActualizar: false,
-        idActualizar: "x",
-        nombreActualizar: ""
+        hamburguesas: [],        
+        error: [],        
+        formActualizar: false,   
+        formEliminar: false     
       };
     },
     created: function () {
       this.listar();
     },
-    methods: {
-      Correcto: function () {
-        this.listo = true;
-        this.ListoMensaje = "¡Correcto!";
-        this.ListoMensaje2 = "La hamburguesa ha sido agregada";
-      },
+    methods: {      
       Editar(hamburguesa) {
         return (
           axios
@@ -138,6 +121,14 @@
         this.ingredientesActualizar = hamburguesa.ingredientes;
         this.formActualizar = true;
       },
+      verEliminar(hamburguesa){
+        this.idActualizar = hamburguesa._id;
+        this.formEliminar = true;
+      },
+      canEliminar(){
+        this.formEliminar = false;
+        this.idActualizar = 'x';
+      },
       listar() {
         axios
           .get("https://prueba-hamburguesas.herokuapp.com/burguer")
@@ -147,25 +138,6 @@
           .catch(e => {
             this.error.push(e);
           });
-      },
-      Agregar() {
-        return (
-          axios
-            .post("https://prueba-hamburguesas.herokuapp.com/burguer", {
-              nombre: this.postNombre,
-              ingredientes: this.postIngredientes,
-              deleted: false,
-              calorias: this.postCalorias
-            })
-            .then(response => { })
-            .catch(e => {
-              console.error(e);
-            }),
-          (this.postNombre = ""),
-          (this.postIngredientes = ""),
-          (this.postCalorias = ""),
-          this.relistar()
-        );
       },
       relistar() {
         setInterval(this.listar, 1000);
